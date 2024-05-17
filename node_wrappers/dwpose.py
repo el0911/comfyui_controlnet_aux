@@ -30,12 +30,14 @@ if not os.environ.get("DWPOSE_ONNXRT_CHECKED"):
 class DWPose_Preprocessor:
     @classmethod
     def INPUT_TYPES(s):
+
         input_types = create_node_input_types(
             number_of_people =(["enable", "disable"], {"default": "enable"}),
             detect_hand=(["enable", "disable"], {"default": "enable"}),
             detect_body=(["enable", "disable"], {"default": "enable"}),
             detect_face=(["enable", "disable"], {"default": "enable"})
         )
+
         input_types["optional"] = {
             **input_types["optional"],
             "bbox_detector": (
@@ -44,6 +46,7 @@ class DWPose_Preprocessor:
             ),
             "pose_estimator": (["dw-ll_ucoco_384_bs5.torchscript.pt", "dw-ll_ucoco_384.onnx", "dw-ll_ucoco.onnx"], {"default": "dw-ll_ucoco_384_bs5.torchscript.pt"})
         }
+        
         return input_types
 
     RETURN_TYPES = ("IMAGE", "POSE_KEYPOINT")
@@ -79,6 +82,7 @@ class DWPose_Preprocessor:
         detect_hand = detect_hand == "enable"
         detect_body = detect_body == "enable"
         detect_face = detect_face == "enable"
+        number_of_people = number_of_people == "enable"
         self.openpose_dicts = []
         def func(image, **kwargs):
             pose_img, openpose_dict = model(image, **kwargs)
