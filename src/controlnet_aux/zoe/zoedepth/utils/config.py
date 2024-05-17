@@ -37,7 +37,7 @@ HOME_DIR = os.path.expanduser("~")
 
 COMMON_CONFIG = {
     "save_dir": os.path.expanduser("~/shortcuts/monodepth3_checkpoints"),
-    "project": "ZoeDepth",
+    "project": "ElZoeDepth",
     "tags": '',
     "notes": "",
     "gpu": None,
