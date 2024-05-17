@@ -31,6 +31,7 @@ class DWPose_Preprocessor:
     @classmethod
     def INPUT_TYPES(s):
         input_types = create_node_input_types(
+            number_of_people =(["enable", "disable"], {"default": "enable"}),
             detect_hand=(["enable", "disable"], {"default": "enable"}),
             detect_body=(["enable", "disable"], {"default": "enable"}),
             detect_face=(["enable", "disable"], {"default": "enable"})
@@ -50,7 +51,7 @@ class DWPose_Preprocessor:
 
     CATEGORY = "ControlNet Preprocessors/Faces and Poses Estimators"
 
-    def estimate_pose(self, image, detect_hand, detect_body, detect_face, resolution=512, bbox_detector="yolox_l.onnx", pose_estimator="dw-ll_ucoco_384.onnx", **kwargs):
+    def estimate_pose(self, image, number_of_people, detect_hand, detect_body, detect_face, resolution=512, bbox_detector="yolox_l.onnx", pose_estimator="dw-ll_ucoco_384.onnx", **kwargs):
         if bbox_detector == "yolox_l.onnx":
             yolo_repo = DWPOSE_MODEL_NAME
         elif "yolox" in bbox_detector:
