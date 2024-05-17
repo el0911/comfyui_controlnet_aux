@@ -31,7 +31,7 @@ class DWPose_Preprocessor:
     @classmethod
     def INPUT_TYPES(s):
         input_types = create_node_input_types(
-            number_of_people = ([1,2,3,4,5,6,7,8,9,10], {"default": 1}),
+            number_of_people =(["enable", "disable"], {"default": "enable"}),
             detect_hand=(["enable", "disable"], {"default": "enable"}),
             detect_body=(["enable", "disable"], {"default": "enable"}),
             detect_face=(["enable", "disable"], {"default": "enable"})
