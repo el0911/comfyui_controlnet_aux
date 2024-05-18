@@ -82,6 +82,7 @@ class DWPose_Preprocessor:
         self.openpose_dicts = []
         def func(image, **kwargs):
             pose_img, openpose_dict = model(image, **kwargs)
+            print(pose_img, openpose_dict)
             self.openpose_dicts.append(openpose_dict)
             return pose_img
 
