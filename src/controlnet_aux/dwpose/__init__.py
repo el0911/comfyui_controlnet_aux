@@ -181,11 +181,31 @@ class DwposeDetector:
             t.det_filename = global_cached_dwpose.det_filename
             global_cached_dwpose = t
         return cls(global_cached_dwpose)
+    
+    def calculate_bounding_box_area(keypoints):
+        if not keypoints:
+            return 0
+        x_coords = [kp.x for kp in keypoints if kp is not None]
+        y_coords = [kp.y for kp in keypoints if kp is not None]
+        if not x_coords or not y_coords:
+            return 0
+        x_min, x_max = min(x_coords), max(x_coords)
+        y_min, y_max = min(y_coords), max(y_coords)
+        return (x_max - x_min) * (y_max - y_min)
+
 
     def detect_poses(self, oriImg) -> List[PoseResult]:
         with torch.no_grad():
             keypoints_info = self.dw_pose_estimation(oriImg.copy())
-            return Wholebody.format_result(keypoints_info)
+            all_poses = Wholebody.format_result(keypoints_info)
+
+            if not all_poses:
+                return []
+
+            # Calculate bounding box areas and find the largest pose
+            largest_pose = max(all_poses, key=lambda pose: calculate_bounding_box_area(pose.body.keypoints))
+            return [largest_pose]
+
     
     def __call__(self, input_image, detect_resolution=512, include_body=True, include_hand=False, include_face=False, hand_and_face=None, output_type="pil", image_and_json=False, upscale_method="INTER_CUBIC", **kwargs):
         if hand_and_face is not None:
