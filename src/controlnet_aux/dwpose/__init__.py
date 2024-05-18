@@ -199,18 +199,18 @@ class DwposeDetector:
 
         print(len(poses))
 
-        if len(poses)>0 : 
-            areas = []
-            for pose in poses:
-                x_coords = pose[:, 0]
-                y_coords = pose[:, 1]
-                x_min, x_max = np.min(x_coords), np.max(x_coords)
-                y_min, y_max = np.min(y_coords), np.max(y_coords)
-                w, h = x_max - x_min, y_max - y_min
-                area = w * h
-                areas.append(area)
+        # if len(poses)>0 : 
+        #     areas = []
+        #     for pose in poses:
+        #         x_coords = pose[:, 0]
+        #         y_coords = pose[:, 1]
+        #         x_min, x_max = np.min(x_coords), np.max(x_coords)
+        #         y_min, y_max = np.min(y_coords), np.max(y_coords)
+        #         w, h = x_max - x_min, y_max - y_min
+        #         area = w * h
+        #         areas.append(area)
 
-            print(len(areas))
+        #     print(len(areas))
 
         canvas = draw_poses(poses, input_image.shape[0], input_image.shape[1], draw_body=include_body, draw_hand=include_hand, draw_face=include_face)
         canvas, remove_pad = resize_image_with_pad(canvas, detect_resolution, upscale_method)
