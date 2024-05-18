@@ -195,7 +195,7 @@ class DwposeDetector:
 
         input_image, output_type = common_input_validate(input_image, output_type, **kwargs)
         poses = self.detect_poses(input_image)
-        print("poses")
+        print("areas")
 
         print(len(poses))
 
