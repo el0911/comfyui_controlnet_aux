@@ -149,6 +149,19 @@ def encode_poses_as_dict(poses: List[PoseResult], canvas_height: int, canvas_wid
 
 global_cached_dwpose = Wholebody()
 
+
+def calculate_bounding_box_area(keypoints):
+        if not keypoints:
+            return 0
+        x_coords = [kp.x for kp in keypoints if kp is not None]
+        y_coords = [kp.y for kp in keypoints if kp is not None]
+        if not x_coords or not y_coords:
+            return 0
+        x_min, x_max = min(x_coords), max(x_coords)
+        y_min, y_max = min(y_coords), max(y_coords)
+        return (x_max - x_min) * (y_max - y_min)
+
+
 class DwposeDetector:
     """
     A class for detecting human poses in images using the Dwpose model.
@@ -182,17 +195,7 @@ class DwposeDetector:
             global_cached_dwpose = t
         return cls(global_cached_dwpose)
     
-    def calculate_bounding_box_area(keypoints):
-        if not keypoints:
-            return 0
-        x_coords = [kp.x for kp in keypoints if kp is not None]
-        y_coords = [kp.y for kp in keypoints if kp is not None]
-        if not x_coords or not y_coords:
-            return 0
-        x_min, x_max = min(x_coords), max(x_coords)
-        y_min, y_max = min(y_coords), max(y_coords)
-        return (x_max - x_min) * (y_max - y_min)
-
+ 
 
     def detect_poses(self, oriImg) -> List[PoseResult]:
         with torch.no_grad():
