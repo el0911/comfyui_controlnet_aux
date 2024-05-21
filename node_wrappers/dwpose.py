@@ -85,7 +85,7 @@ class DWPose_Preprocessor:
             self.openpose_dicts.append(openpose_dict)
             return pose_img
 
-        out = common_annotator_call(func, image, include_hand=detect_hand, include_face=detect_face, include_body=detect_body, image_and_json=True,max_poses=int(number_of_people), resolution=resolution)
+        out = common_annotator_call(func, image, include_hand=detect_hand, include_face=detect_face, include_body=detect_body, image_and_json=True,index_pose=int(number_of_people), resolution=resolution)
         del model
         return {
             'ui': { "openpose_json": [json.dumps(self.openpose_dicts, indent=4)] },

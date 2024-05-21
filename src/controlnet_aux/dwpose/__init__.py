@@ -197,27 +197,26 @@ class DwposeDetector:
     
  
 
-    def detect_poses(self, oriImg, max_poses=1) -> List[PoseResult]:
+    def detect_poses(self, oriImg, index_pose=1) -> List[PoseResult]:
         with torch.no_grad():
             keypoints_info = self.dw_pose_estimation(oriImg.copy())
             all_poses = Wholebody.format_result(keypoints_info)
-
-            if not all_poses:
+        
+        # Return the pose at the given index if it exists, otherwise return an empty array
+            if 0 <= index_pose - 1 < len(all_poses):
+                return [all_poses[index_pose - 1]]
+            else:
                 return []
 
-            # Sort poses by bounding box areas in descending order and take the top max_poses
-            all_poses.sort(key=lambda pose: calculate_bounding_box_area(pose.body.keypoints), reverse=True)
-            return all_poses[:max_poses]
-
     
-    def __call__(self, input_image, detect_resolution=512, include_body=True, include_hand=False, include_face=False, hand_and_face=None, output_type="pil", image_and_json=False, upscale_method="INTER_CUBIC",max_poses = 1, **kwargs):
+    def __call__(self, input_image, detect_resolution=512, include_body=True, include_hand=False, include_face=False, hand_and_face=None, output_type="pil", image_and_json=False, upscale_method="INTER_CUBIC",index_pose = 1, **kwargs):
         if hand_and_face is not None:
             warnings.warn("hand_and_face is deprecated. Use include_hand and include_face instead.", DeprecationWarning)
             include_hand = hand_and_face
             include_face = hand_and_face
 
         input_image, output_type = common_input_validate(input_image, output_type, **kwargs)
-        poses = self.detect_poses(input_image,max_poses)
+        poses = self.detect_poses(input_image,index_pose)
         print("areas")
 
         print(len(poses))
